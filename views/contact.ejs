@@ -1,0 +1,98 @@
+<%- include("partials/header.ejs") %>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>AddCar</h4>
+                </div>
+                <div class="card-body">
+                    <div class="col-3 mb-3">
+                        <button class="btn btn-primary" id="add_car" name="add_car">AddCar</button>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ทะเบียนรถ</th>
+                                <th scope="col">ประเภท</th>
+                                <th scope="col">ยี่ห้อ</th>
+                                <th scope="col">รุ่น</th>
+                                <th scope="col">สี</th>
+                                <th scope="col">เกียร์</th>
+                                <th scope="col">ปี</th>
+                                <th scope="col">จังหวัด</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                                <td>@mdo</td>
+                                <td>@mdo</td>
+                                <td>@mdo</td>
+                                <td>@mdo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">AddCar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/create" method="post" >
+                    <div class="mb-1">
+                        <label for="car_license" class="col-form-label">ทะเบียนรถ:</label>
+                        <input type="text" class="form-control" id="car_license">
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_type" class="col-form-label">ประเภท:</label>
+                        <input type="text" class="form-control" id="car_type">
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_brand" class="col-form-label">ยี่ห้อ:</label>
+                        <input type="text" class="form-control" id="car_brand">
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_model" class="col-form-label">รุ่น:</label>
+                        <input type="text" class="form-control" id="car_model">
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_color" class="col-form-label">สี:</label>
+                        <input type="text" class="form-control" id="car_color">
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_year" class="col-form-label">ปี:</label>
+                        <input type="text" class="form-control" id="car_year">
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_gear" class="col-form-label">เกียร์:</label>
+                        <input type="text" class="form-control" id="car_gear">
+                    </div>
+                    <button class="btn btn-primary mt-3" type="submit">Submit</button>
+                </form>
+            </div>    
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('add_car').addEventListener("click", function () {
+        $("#myModal").modal('show');
+    });
+    // close modal
+    document.getElementById('modal_close').addEventListener("click", function () {
+        $("#myModal").modal('hide');
+    });
+</script>
+<%- include("partials/footer.ejs") %>

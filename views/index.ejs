@@ -1,0 +1,103 @@
+<%- include("partials/header.ejs") %>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>AddCar</h4>
+                </div>
+                <div class="card-body">
+                    <div class="col-3 mb-3">
+                        <button class="btn btn-primary" id="add_car" name="add_car">AddCar</button>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ลำดับ</th>
+                                <th scope="col">ทะเบียนรถ</th>
+                                <th scope="col">ประเภท</th>
+                                <th scope="col">ยี่ห้อ</th>
+                                <th scope="col">รุ่น</th>
+                                <th scope="col">สี</th>
+                                <th scope="col">เกียร์</th>
+                                <th scope="col">ปี</th>
+                                <th scope="col">จังหวัด</th>
+                                <th scope="col">การจัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% car_data.forEach((car, index) => { %>
+                            <tr>
+                                <th scope="row"><%= index + 1 %></th>
+                                <td><%= car.car_license %></td>
+                                <td><%= car.car_type %></td>
+                                <td><%= car.car_brand %></td>
+                                <td><%= car.car_model %></td>
+                                <td><%= car.car_color %></td>
+                                <td><%= car.car_year %></td>
+                                <td><%= car.car_gear %></td>
+                                <td><%= car.car_province %></td>
+                                <td><button class="btn button-primary">Delete</button></td>
+                            </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">AddCar</h5>
+            </div>
+            <div class="modal-body">
+                <form action="/create" method="post">
+                    <div class="mb-1">
+                        <label for="car_license" class="col-form-label">ทะเบียนรถ:</label>
+                        <input type="text" class="form-control" name="car_license" required>
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_type" class="col-form-label">ประเภท:</label>
+                        <input type="text" class="form-control" name="car_type" required>
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_brand" class="col-form-label">ยี่ห้อ:</label>
+                        <input type="text" class="form-control" name="car_brand" required>
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_model" class="col-form-label">รุ่น:</label>
+                        <input type="text" class="form-control" name="car_model" required>
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_color" class="col-form-label">สี:</label>
+                        <input type="text" class="form-control" name="car_color" required>
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_year" class="col-form-label">ปี:</label>
+                        <input type="text" class="form-control" name="car_year" required>
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_gear" class="col-form-label">เกียร์:</label>
+                        <input type="text" class="form-control" name="car_gear" required>
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_province" class="col-form-label">จังหวัด:</label>
+                        <input type="text" class="form-control" name="car_province" required>
+                    </div>
+                    <button class="btn btn-primary mt-3" type="submit">เพิ่ม</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('add_car').addEventListener("click", function () {
+        $("#myModal").modal('show');
+    });
+</script>
+<%- include("partials/footer.ejs") %>
