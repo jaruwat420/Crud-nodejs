@@ -9,6 +9,10 @@ body {
     justify-content: stretch;
 }
 
+table.dataTable td {
+    width: 100px; 
+}
+
 header,
 footer {
     flex: 0 0 auto;

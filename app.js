@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import carRoutes from "./routes/car.routes.js";
-import Swal from "sweetalert2";
+import util from "util";
 
 
 const app = express();
@@ -16,6 +16,7 @@ app.set("port", process.env.PORT || 3000);
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Route
 app.use(carRoutes);

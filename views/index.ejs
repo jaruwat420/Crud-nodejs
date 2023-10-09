@@ -8,9 +8,9 @@
                 </div>
                 <div class="card-body">
                     <div class="col-3 mb-3">
-                        <button class="btn btn-primary" id="add_car" name="add_car">AddCar</button>
+                        <button class="btn btn-primary" id="btn_addCar" name="btn_addCar">AddCar</button>
                     </div>
-                    <table class="table">
+                    <table class="table table-striped" id="dataTable" class="display">
                         <thead>
                             <tr>
                                 <th scope="col">ลำดับ</th>
@@ -18,28 +18,16 @@
                                 <th scope="col">ประเภท</th>
                                 <th scope="col">ยี่ห้อ</th>
                                 <th scope="col">รุ่น</th>
-                                <th scope="col">สี</th>
-                                <th scope="col">เกียร์</th>
+                                <th scope="col">สี</th>                                
                                 <th scope="col">ปี</th>
+                                <th scope="col">เกียร์</th>
                                 <th scope="col">จังหวัด</th>
-                                <th scope="col">การจัดการ</th>
+                                <th scope="col">แก้ไข</th>
+                                <th scope="col" >ลบ</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% car_data.forEach((car, index) => { %>
-                            <tr>
-                                <th scope="row"><%= index + 1 %></th>
-                                <td><%= car.car_license %></td>
-                                <td><%= car.car_type %></td>
-                                <td><%= car.car_brand %></td>
-                                <td><%= car.car_model %></td>
-                                <td><%= car.car_color %></td>
-                                <td><%= car.car_year %></td>
-                                <td><%= car.car_gear %></td>
-                                <td><%= car.car_province %></td>
-                                <td><button class="btn button-primary">Delete</button></td>
-                            </tr>
-                            <% }); %>
+
                         </tbody>
                     </table>
                 </div>
@@ -47,7 +35,9 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+
+<!-- Modal Create -->
+<div class="modal fade" id="ModalCreate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -94,10 +84,214 @@
         </div>
     </div>
 </div>
+<!-- Modal Edit -->
+<div class="modal fade" id="ModalEdit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">editCar</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-1">
+                        <label for="car_license" class="col-form-label">ทะเบียนรถ:</label>
+                        <input type="text" class="form-control" id="car_license" name="car_license">
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_type" class="col-form-label">ประเภท:</label>
+                        <input type="text" class="form-control" id="car_type" name="car_type">
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_brand" class="col-form-label">ยี่ห้อ:</label>
+                        <input type="text" class="form-control" id="car_brand" name="car_brand">
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_model" class="col-form-label">รุ่น:</label>
+                        <input type="text" class="form-control" id="car_model" name="car_model">
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_color" class="col-form-label">สี:</label>
+                        <input type="text" class="form-control" id="car_color" name="car_color">
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_year" class="col-form-label">ปี:</label>
+                        <input type="text" class="form-control" id="car_year" name="car_year">
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_gear" class="col-form-label">เกียร์:</label>
+                        <input type="text" class="form-control" id="car_gear" name="car_gear">
+                    </div>
+                    <div class="mb-1">
+                        <label for="car_province" class="col-form-label">จังหวัด:</label>
+                        <input type="text" class="form-control" id="car_province" name="car_province">
+                    </div>
+                    <button class="btn btn-primary mt-3" type="button" id="sendUpdate" >อัพเดทข้อมูล</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<%- include("partials/footer.ejs") %>
 
 <script>
-    document.getElementById('add_car').addEventListener("click", function () {
-        $("#myModal").modal('show');
+    $(document).ready(function () {        
+        // Reload DataTable
+        get_dataTable();
+        
+        // Get DataTable
+        function get_dataTable() {
+            fetch('/getdatatable')
+                .then(res => res.json())
+                .then(data => {
+                    //console.log('Data:', data);
+                    // Populate the DataTable with data
+                        dataTable = $('#dataTable').DataTable({
+                        serverSide: false,
+                        data: data,
+                        searching: true,
+                        destroy: true,
+                        "ordering": false,
+                        columns: [
+                        {data: null, render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }},
+                        {data: 'car_license'},
+                        {data: 'car_type'},
+                        {data: 'car_brand'},
+                        {data: 'car_model'},
+                        {data: 'car_color'},
+                        {data: 'car_year'},
+                        {data: 'car_gear'},
+                        {data: 'car_province'},
+                            {data: null,render: function (data, type, row) {
+                                return `<button class="btn btn-warning btn-edit" id = "btn-edit" data-id="${data.car_id}">Edit</button>`;
+                            }
+                            },
+                            {data: null,render: function (data, type, row) {
+                                return `<button class="btn btn-danger btn-delete" id = "btn-delete" data-id="${data.car_id}">Delete</button>`;
+                            }
+                            }
+                        ],
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // show Modals
+        $('#btn_addCar').click(function (){
+            $('#ModalCreate').modal('show');
+        }); 
+
+        // button DataTable setValue
+        $('#dataTable').on('click', '.btn-edit', function() {
+            $('#ModalEdit').modal('show');
+            carId = $(this).data('id'); 
+            const carData = rowData; 
+            
+            $('#car_license').val(carData.car_license);
+            $('#car_type').val(carData.car_type);
+            $('#car_brand').val(carData.car_brand);
+            $('#car_model').val(carData.car_model);
+            $('#car_color').val(carData.car_color);
+            $('#car_gear').val(carData.car_gear);
+            $('#car_year').val(carData.car_year);
+            $('#car_province').val(carData.car_province);
+            
+        });
+
+        // Delete Data
+        $('#dataTable').on('click', '.btn-delete', function() {
+            carId = $(this).data('id');
+
+            Swal.fire({
+                title: 'คุณต้องการลบข้อมูล?',
+                text: 'คุณจะไม่สามารถย้อนกลับได้!!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'ลบข้อมูล!',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // User confirmed, proceed with deletion
+                    $.ajax({
+                        type: 'put',
+                        url: '/delete/' + carId,
+                        data: { carId: carId },
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.status == 200) {
+                                Swal.fire('ลบข้อมูลสำเร็จ!', 'ลบข้อมูลที่เลือกแล้ว.', 'success')                            
+                            }
+                            // Reload DataTable
+                            get_dataTable();
+                        },
+                        error: function (error) {
+                            Swal.fire('เกิดข้อผิดพลาด', 'เกิดข้อผิดพลาดขณะลบ', 'error');
+                        }
+                    });
+                }
+            });
+        });
+
+
+        // get value DataTable
+        $('#dataTable tbody').on( 'click', 'tr', function () {
+            rowData = dataTable.row( this ).data(); 
+        });    
+        carId = $(this).data('id');
+
+        // sendUpdate
+        $('#sendUpdate').click(function(){
+            const carData = {
+            car_license: document.getElementById('car_license').value,
+            car_type: document.getElementById('car_type').value,
+            car_brand: document.getElementById('car_brand').value,
+            car_model: document.getElementById('car_model').value,
+            car_color: document.getElementById('car_color').value,
+            car_year: document.getElementById('car_year').value,
+            car_gear: document.getElementById('car_gear').value,
+            car_province: document.getElementById('car_province').value
+            }
+            $.ajax({
+                type: "put",  
+                url: "/update/" + carId,
+                data: { 
+                    car_license: carData.car_license,
+                    car_type: carData.car_type,
+                    car_brand: carData.car_brand,
+                    car_model: carData.car_model,
+                    car_color: carData.car_color,
+                    car_gear: carData.car_gear,
+                    car_year: carData.car_year,
+                    car_province: carData.car_province
+                }, 
+                dataType: "JSON",
+                success: function (res) {
+                    if (res.status == 200) {
+                        Swal.fire({
+                            title: 'อัพเดทข้อมูลสำเร็จ!',
+                            text: 'อัพเดทข้อมูลที่เลือกแล้ว.',
+                            icon: 'success',
+                        }).then(() => {
+                            $('#ModalEdit').modal('hide');
+
+                            // Reload DataTable
+                            get_dataTable();
+                        });
+                    }
+                },
+                error: function (error) {
+                    Swal.fire('เกิดข้อผิดพลาด', 'เกิดข้อผิดพลาดขณะอัพเดท', 'error');
+                }
+            });            
+        })
+        
     });
+    window.carId
+    window.dataTable
+    window.rowData
+
 </script>
-<%- include("partials/footer.ejs") %>
