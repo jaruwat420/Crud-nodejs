@@ -41,16 +41,7 @@ export const createCar = async (req, res) => {
 export const updateCar = async (req, res) => {
     const newCar = req.body;
     const reqId = req.params.id;
-    const {
-        car_license,
-        car_type,
-        car_brand,
-        car_model,
-        car_color,
-        car_year,
-        car_gear,
-        car_province
-    } = newCar;
+    const {car_license, car_type, car_brand, car_model, car_color, car_year, car_gear, car_province} = newCar;
 
     const updateQuery = `
         UPDATE car_data 
@@ -73,12 +64,13 @@ export const updateCar = async (req, res) => {
         res.status(404).json({ message: `${error}` });
         return;
     }
-    };
+};
 
+// Delete 
 export const deleteCar = async (req, res) => {
     const {id} = req.params;
     const [result] = await pool.query("DELETE FROM car_data WHERE car_id = ?", [id]);
-    const resultStr = JSON.parse(JSON.stringify(result));
+    // const resultStr = JSON.parse(JSON.stringify(result));
 
     if (result.affectedRows === 1) {        
         res.status(200).json({ message: "ลบข้อมูลสำเร็จ" });

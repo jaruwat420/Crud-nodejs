@@ -1,21 +1,19 @@
 import express from "express";
 import bodyParser from "body-parser";
-import morgan from "morgan";
 import carRoutes from "./routes/car.routes.js";
-import util from "util";
-
+import ejs  from "ejs";
 
 const app = express();
-const port = 3000;
 
 // Static file
 app.use(express.static("public"));
+app.set('view engine', 'ejs');
 
 // setting 
 app.set("port", process.env.PORT || 3000);
 
 // Middleware
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Route

@@ -27,7 +27,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
                         </tbody>
                     </table>
                 </div>
@@ -84,6 +83,7 @@
         </div>
     </div>
 </div>
+
 <!-- Modal Edit -->
 <div class="modal fade" id="ModalEdit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -136,6 +136,7 @@
 <!-- Footer -->
 <%- include("partials/footer.ejs") %>
 
+<!-- Scripts -->
 <script>
     $(document).ready(function () {        
         // Reload DataTable
@@ -146,8 +147,7 @@
             fetch('/getdatatable')
                 .then(res => res.json())
                 .then(data => {
-                    //console.log('Data:', data);
-                    // Populate the DataTable with data
+                    //console.log(data);
                         dataTable = $('#dataTable').DataTable({
                         serverSide: false,
                         data: data,
@@ -236,7 +236,6 @@
             });
         });
 
-
         // get value DataTable
         $('#dataTable tbody').on( 'click', 'tr', function () {
             rowData = dataTable.row( this ).data(); 
@@ -287,8 +286,7 @@
                     Swal.fire('เกิดข้อผิดพลาด', 'เกิดข้อผิดพลาดขณะอัพเดท', 'error');
                 }
             });            
-        })
-        
+        })        
     });
     window.carId
     window.dataTable
